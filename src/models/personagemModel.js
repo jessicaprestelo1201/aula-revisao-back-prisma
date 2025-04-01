@@ -1,54 +1,40 @@
 import prisma from "../../prisma/prisma.js";
 
-class AnimeModel {
+class PersonagemModel {
   // Obter todos os animes
   async findAll() {
-    const animes = await prisma.anime.findMany({
+    const personagens = await prisma.personagem.findMany({
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    return animes;
+    return personagens;
   }
 
-  // Obter um anime pelo ID
+  // Obter um personagem pelo ID
   async findById(id) {
-    const anime = await prisma.anime.findUnique({
+    const personagem = await prisma.personagem.findUnique({
       where: {
         id: Number(id),
       },
     });
 
-    return anime;
+    return personagem;
   }
 
   // Criar um novo anime
-   async create(
-    title,
-    description,
-    episodes,
-    releaseYear,
-    studio,
-    genres,
-    rating,
-    imageUrl
-  ) {
-    const newAnime = await prisma.anime.create ({
-      data: {
-        title,
-        description,
-        episodes,
-        releaseYear,
-        studio,
-        genres,
-        rating,
-        imageUrl,
-        
-    },
-    });
+   async create (name, description, age, power,anime){
+    const newPersonagem = await prisma.personagem.create ({
+      name,
+      description,
+      age,
+      power,
+      anime
+   })
 
-    return newAnime;
+
+    return newPersonagem;
   }
 
   // Atualizar um anime
@@ -63,9 +49,9 @@ class AnimeModel {
     rating,
     imageUrl
   ) {
-    const anime = await this.findById(id);
+    const personagem = await this.findById(id);
 
-    if (!anime) {
+    if (!personagem) {
       return null;
     }
 
@@ -98,26 +84,26 @@ if (imageUrl !== undefined) {
   data.imageUrl = imageUrl;
 }
 
-const animeUpdate = await prisma.anime.update ({
+const personagemUpdate = await prisma.personagem.update ({
   where: {
     id: Number(id),
   },
   data,
 });
 
-return animeUpdate;
+return personagemUpdate;
 
 };
 
   // Remover um anime
   async delete(id) {
-    const anime = this.findById(id);
+    const personagem = this.findById(id);
 
     if (!anime) {
       return null;
     }
 
- await prisma.anime.delete({
+ await prisma.personagem.delete({
   where: {
     id: Number(id),
   },
@@ -127,4 +113,5 @@ return animeUpdate;
   }
 }
 
-export default new AnimeModel();
+
+export default new PersonagemModel();
